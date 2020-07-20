@@ -1,0 +1,1 @@
+# keepalived_mysql_master_slave
