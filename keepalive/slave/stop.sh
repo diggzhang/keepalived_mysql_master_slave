@@ -3,6 +3,7 @@
 . /root/.bash_profile
 
 mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'replica'@'%' IDENTIFIED BY '123456';flush privileges;"
+mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';flush privileges;"
 mysql -uroot -p123456 -e "set global innodb_support_xa=1;"
 mysql -uroot -p123456 -e "set global sync_binlog=1;"
 mysql -uroot -p123456 -e "set global innodb_flush_log_at_trx_commit=1;"
@@ -33,3 +34,13 @@ else
    let i++
 fi
 done
+
+
+curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67fff097405efadc5b7cb3e611437c51d5dc9e4d4bf' \
+   -H 'Content-Type: application/json' \
+   -d '
+  {"msgtype": "text",
+    "text": {
+        "content": "SLAVE: slave节点 stop.sh生产环境触发，mysql节点停工"
+     }
+  }'

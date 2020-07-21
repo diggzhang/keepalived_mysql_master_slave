@@ -31,28 +31,21 @@ done
 #TODO: 停止从 io thread 可能
 mysql -uroot -p123456 -e "STOP SLAVE IO_THREAD;"
 mysql -uroot -p123456 -e "show processlist;"
-
 mysql -uroot -p123456 -e "stop slave;"
 mysql -uroot -p123456 -e "set global innodb_support_xa=0;"
 mysql -uroot -p123456 -e "set global sync_binlog=0;"
 mysql -uroot -p123456 -e "set global innodb_flush_log_at_trx_commit=0;"
-mysql -uroot -p123456 -e "flush logs;GRANT ALL PRIVILEGES ON *.* TO 'replica'@'%' IDENTIFIED BY '123456';flush privileges;"
-mysql -uroot -p123456 -e "show master status;" > /tmp/master_status_$(date "+%y%m%d-%H%M").txt
+mysql -uroot -p123456 -e "show master status;"
+mysql -uroot -p123456 -S "SET GLOBAL read_only = ON;"
+mysql -uroot -p123456 -S "FLUSH TABLES WITH READ LOCK;"
+mysql -uroot -p123456 -e "REVOKE ALL PRIVILEGES ON *.* FROM 'root'@'%';flush privileges;"
+mysql -uroot -p123456 -e "grant select on *.* to 'root'@'%';flush privileges;"
 
-
-#当slave提升为主以后，发送邮件
-echo "#####################################" > /tmp/status
-echo "slave已经提升为主库，请进行检查！" >> /tmp/status
-ifconfig | sed -n '/inet /{s/.*addr://;s/ .*//;p}' | grep -v 127.0.0.1 >> /tmp/status
-mysql -uroot -p123456 -Nse "show variables like 'port'" >> /tmp/status
-echo "#####################################" >> /tmp/status
-master=`cat /tmp/status`
-echo "$master" > /tmp/keepalive_alert.log
 curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67fff097405efadc5b7cb3e611437c51d5dc9e4d4bf' \
    -H 'Content-Type: application/json' \
    -d '
   {"msgtype": "text", 
     "text": {
-        "content": "生产环境mysql从节点切换为主"
+        "content": "SLAVE: mysql slave 从节点切换为主, IP漂移至从节点。slave已经提升为主库，请进行检查!"
      }
   }'
