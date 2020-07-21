@@ -34,3 +34,13 @@ mysql -uroot -p123456 -e "set global sync_binlog=0;"
 mysql -uroot -p123456 -e "set global innodb_flush_log_at_trx_commit=0;"
 mysql -uroot -p123456 -e "flush logs;GRANT ALL PRIVILEGES ON *.* TO 'replica'@'%' IDENTIFIED BY '123456';flush privileges;"
 mysql -uroot -p123456 -e "show master status;" > /tmp/master_status_$(date "+%y%m%d-%H%M").txt
+
+curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67fff097405efadc5b7cb3e611437c51d5dc9e4d4bf' \
+   -H 'Content-Type: application/json' \
+   -d '
+  {"msgtype": "text",
+    "text": {
+        "content": "master.sh生产环境mysql主节点触发"
+     }
+  }'
+
