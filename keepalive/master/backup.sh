@@ -14,6 +14,6 @@ curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67f
    -d '
   {"msgtype": "text",
     "text": {
-        "content": "backup.sh:生产环境mysql主节点keepalive切换为backup。等待手动确定。"
+        "content": "MASTER ALERT: <backup.sh> 生产环境mysql主节点keepalive切换为backup。🐖主节点mysql准备就绪。"
      }
   }'

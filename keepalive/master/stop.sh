@@ -2,10 +2,10 @@
 
 . /root/.bash_profile
 
-mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'replica'@'%' IDENTIFIED BY '123456';flush privileges;"
-mysql -uroot -p123456 -e "set global innodb_support_xa=1;"
-mysql -uroot -p123456 -e "set global sync_binlog=1;"
-mysql -uroot -p123456 -e "set global innodb_flush_log_at_trx_commit=1;"
+#mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'replica'@'%' IDENTIFIED BY '123456';flush privileges;"
+#mysql -uroot -p123456 -e "set global innodb_support_xa=1;"
+#mysql -uroot -p123456 -e "set global sync_binlog=1;"
+#mysql -uroot -p123456 -e "set global innodb_flush_log_at_trx_commit=1;"
 
 M_File1=$(mysql -uroot -p123456 -e "show master status\G" | awk -F': ' '/File/{print $2}')
 M_Position1=$(mysql -uroot -p123456 -e "show master status\G" | awk -F': ' '/Position/{print $2}')
@@ -40,6 +40,6 @@ curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67f
    -d '
   {"msgtype": "text",
     "text": {
-        "content": "stop.sh生产环境mysql主节点停工"
+        "content": "MASTER ALERT: mysql master节点触发stop.sh，keepalive停工"
      }
   }'

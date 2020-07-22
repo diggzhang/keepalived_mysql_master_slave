@@ -39,13 +39,13 @@ mysql -uroot -p123456 -e "show master status;"
 mysql -uroot -p123456 -S "SET GLOBAL read_only = ON;"
 mysql -uroot -p123456 -S "FLUSH TABLES WITH READ LOCK;"
 mysql -uroot -p123456 -e "REVOKE ALL PRIVILEGES ON *.* FROM 'root'@'%';flush privileges;"
-mysql -uroot -p123456 -e "grant select on *.* to 'root'@'%';flush privileges;"
+mysql -uroot -p123456 -e "GRANT SELECT ON *.* TO 'root'@'%';FLUSH PRIVILEGES;"
 
 curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67fff097405efadc5b7cb3e611437c51d5dc9e4d4bf' \
    -H 'Content-Type: application/json' \
    -d '
   {"msgtype": "text", 
     "text": {
-        "content": "SLAVE: mysql slave 从节点切换为主, IP漂移至从节点。slave已经提升为主库，请进行检查!"
+        "content": "SLAVE ALERT: <master.sh> mysql slave节点切换为主, IP漂移至从节点。`root`用户处于只读模式。`replica`同步停止。"
      }
   }'

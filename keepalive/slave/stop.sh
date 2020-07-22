@@ -2,8 +2,9 @@
 
 . /root/.bash_profile
 
-mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'replica'@'%' IDENTIFIED BY '123456';flush privileges;"
-mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';flush privileges;"
+#mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'replica'@'%' IDENTIFIED BY '123456';FLUSH PRIVILEGES;"
+#mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';flush privileges;"
+mysql -uroot -p123456 -e "stop slave;"
 mysql -uroot -p123456 -e "set global innodb_support_xa=1;"
 mysql -uroot -p123456 -e "set global sync_binlog=1;"
 mysql -uroot -p123456 -e "set global innodb_flush_log_at_trx_commit=1;"
@@ -24,9 +25,9 @@ then
    echo "ok"
    break
 else
-   sleep 1
+   #sleep 1
 
-   if [ $i -gt 60 ]
+   if [ $i -gt 20 ]
    then
       break
    fi
@@ -41,6 +42,6 @@ curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67f
    -d '
   {"msgtype": "text",
     "text": {
-        "content": "SLAVE: slave节点 stop.sh生产环境触发，mysql节点停工"
+        "content": "SLAVE ALERT: mysql slave节点触发stop.sh，keepalive停工"
      }
   }'

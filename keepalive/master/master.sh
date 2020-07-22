@@ -28,7 +28,7 @@ else
 fi
 done
 
-mysql -uroot -p123456 -e "stop slave;"
+#mysql -uroot -p123456 -e "stop slave;"
 mysql -uroot -p123456 -e "set global innodb_support_xa=0;"
 mysql -uroot -p123456 -e "set global sync_binlog=0;"
 mysql -uroot -p123456 -e "set global innodb_flush_log_at_trx_commit=0;"
@@ -40,7 +40,7 @@ curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67f
    -d '
   {"msgtype": "text",
     "text": {
-        "content": "master.sh生产环境mysql主节点触发"
+        "content": "MASTER ALERT: <master.sh> 生产环境mysql主节点触发启动。"
      }
   }'
 
