@@ -38,4 +38,6 @@ curl 'https://oapi.dingtalk.com/robot/send?access_token=2c0247a604d7201cc804c67f
      }
   }'
 
-pkill keepalived
+
+systemctl stop keepalived
+#pkill keepalived

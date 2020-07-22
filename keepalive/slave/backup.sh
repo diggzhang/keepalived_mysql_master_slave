@@ -5,6 +5,7 @@
 mysql -uroot -p123456 -S /var/lib/mysql/mysql.sock -e "SET GLOBAL read_only = OFF;"
 mysql -uroot -p123456 -S /var/lib/mysql/mysql.sock -e "UNLOCK TABLES;"
 mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'replica'@'%' IDENTIFIED BY '123456';flush privileges;"
+mysql -uroot -p123456 -e "STOP SLAVE;START SLAVE;"
 #TODO 从节点必须提升为主节点的情况下调用此行授权用户
 #mysql -uroot -p123456 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';flush privileges;"
 mysql -uroot -p123456 -e "set global event_scheduler=0;"
